@@ -21,7 +21,7 @@
                     <th scope="col">Content</th>
                     <th scope="col">Tags</th>
                     <th scope="col">Status</th>
-                    <th scope="col" class="col-md-1"></th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,9 +33,8 @@
                         <td>{{ $post->content }}</td>
                         <td>{{ $post->tags }}</td>
                         <td>{{ $post->status }}</td>
-                        <td class="d-flex flex-column">
+                        <td>
                             <div class="text-center">
-                                <button class="btn"><img src="{{ asset('public/images/eye-fill.svg') }}" alt="view">
                                 </button>
                             </div>
                             <form method="post" action="{{ route('gotoChangePost') }}" class="text-center">

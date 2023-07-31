@@ -17,8 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome', ['posts' => Post::paginate(10)]);
+    return view('welcome', ['posts' => Post::orderBy('created_at', 'desc')
+        ->where('status', Post::STATUS_PUBLISHED)
+        ->orWhere('status', Post::STATUS_ARCHIVED)
+        ->paginate(10)]);
 });
+Route::get('posts/{post}', [PostController::class, 'gotoDetailed'])->name('postsDetailed');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/posts', [PostController::class, 'index'])->name('posts');

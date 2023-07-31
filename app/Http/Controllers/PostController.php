@@ -13,6 +13,11 @@ class PostController extends Controller
         return view('admin.posts', ['posts' => Post::all()]);
     }
 
+    public function gotoDetailed(Request $request)
+    {
+        return view('postDetailed', ['post' => Post::find($request->input('post_id'))]);
+    }
+
     public function gotoCreate()
     {
         return view('admin.postsCreation');
