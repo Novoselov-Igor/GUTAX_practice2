@@ -9,9 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminCheck
 {
-    public function handle(Request $request): ?string
+    public function handle(Request $request, Closure $next)
     {
-        dd($request);
-        //return Auth::user() !== null && Auth::user()->profile === 'admin' ? null : route('login');
+        if(!Auth::check() || !Auth::user()->isAdmin()){
+            return redirect('/');
+        }
+
+        return $next($request);
     }
 }

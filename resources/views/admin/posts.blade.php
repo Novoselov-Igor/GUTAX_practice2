@@ -34,9 +34,6 @@
                         <td>{{ $post->tags }}</td>
                         <td>{{ $post->status }}</td>
                         <td>
-                            <div class="text-center">
-                                </button>
-                            </div>
                             <form method="post" action="{{ route('gotoChangePost') }}" class="text-center">
                                 @csrf
                                 <input name="post_id" value="{{ $post->id }}" hidden>

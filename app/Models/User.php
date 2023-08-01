@@ -47,6 +47,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function isAdmin(){
+        return $this->profile === 'admin';
+    }
+
     public function posts():BelongsTo{
         return $this->belongsTo(Post::class, 'author_id', 'id');
     }

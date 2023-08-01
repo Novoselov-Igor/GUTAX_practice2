@@ -13,7 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
@@ -37,7 +36,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/') }}">HOME</a>
                     </li>
-                    @if(Auth::user() !== null && Auth::user()->profile === 'admin')
+                    @if(Auth::user() !== null && Auth::user()->isAdmin())
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('posts') }}">POSTS</a>
                         </li>

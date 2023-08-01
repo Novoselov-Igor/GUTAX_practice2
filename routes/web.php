@@ -24,16 +24,20 @@ Route::get('/', function () {
 });
 Route::get('posts/{post}', [PostController::class, 'gotoDetailed'])->name('postsDetailed');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/posts', [PostController::class, 'index'])->name('posts');
     Route::get('admin/posts/create', [PostController::class, 'gotoCreate'])->name('gotoCreatePost');
     Route::get('admin/comments', [CommentController::class, 'index'])->name('comments');
+
+    Route::post('admin/posts/created', [PostController::class, 'createPost'])->name('createPost');
+    Route::post('admin/posts/deleted', [PostController::class, 'deletePost'])->name('deletePost');
+    Route::post('admin/posts/change', [PostController::class, 'gotoChange'])->name('gotoChangePost');
+    Route::post('admin/posts/changed', [PostController::class, 'changePost'])->name('changePost');
+    Route::post('admin/comments/approved', [CommentController::class, 'approveComment'])->name('approveComment');
+    Route::post('admin/comments/deleted', [CommentController::class, 'deleteComment'])->name('deleteComment');
 });
 
-Route::post('admin/posts/created', [PostController::class, 'createPost'])->name('createPost');
-Route::post('admin/posts/deleted', [PostController::class, 'deletePost'])->name('deletePost');
-Route::post('admin/posts/change', [PostController::class, 'gotoChange'])->name('gotoChangePost');
-Route::post('admin/posts/changed', [PostController::class, 'changePost'])->name('changePost');
+Route::post('comment/created', [CommentController::class, 'createComment'])->name('createComment');
 
 Auth::routes();
 

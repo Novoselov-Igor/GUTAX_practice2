@@ -15,8 +15,6 @@ return new class extends Migration {
             $table->text('content');
             $table->integer('status');
             $table->string('author');
-            $table->string('email');
-            $table->string('url');
             $table->timestamps();
             $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete()->restrictOnUpdate();
         });

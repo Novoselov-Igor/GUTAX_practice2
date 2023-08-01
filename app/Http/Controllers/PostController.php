@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ class PostController extends Controller
 
     public function gotoDetailed(Request $request)
     {
-        return view('postDetailed', ['post' => Post::find($request->input('post_id'))]);
+        return view('postDetailed', ['post' => Post::find($request->input('post_id')),
+            'comments' => Comment::all()->where('post_id', $request->input('post_id'))]);
     }
 
     public function gotoCreate()
