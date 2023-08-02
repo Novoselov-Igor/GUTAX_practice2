@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TagController;
+use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,9 +23,15 @@ Route::get('/', function () {
     return view('welcome', ['posts' => Post::orderBy('created_at', 'desc')
         ->where('status', Post::STATUS_PUBLISHED)
         ->orWhere('status', Post::STATUS_ARCHIVED)
-        ->paginate(10)]);
+        ->paginate(10),
+        'comments' => Comment::orderby('created_at', 'desc')
+            ->where('status', Comment::STATUS_APPROVED)
+            ->limit(5)
+            ->get(),
+        'tags' => Tag::all()]);
 });
 Route::get('posts/{post}', [PostController::class, 'gotoDetailed'])->name('postsDetailed');
+Route::get('{tag}', [TagController::class, 'tagFilter'])->name('gotoFiltered');
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/posts', [PostController::class, 'index'])->name('posts');

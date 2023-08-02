@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -32,13 +33,14 @@ class CommentController extends Controller
             'post_id' => $request->input('id')
         ]);
 
-        return response()->json(['success' => 'comment successfully created']);
+        return response()->json(['success'
+        => 'The comment has been successfully created and is awaiting approval from the administration.']);
     }
 
     public function approveComment(Request $request)
     {
         Comment::find($request->input('comment_id'))->update([
-            'status' => 1
+            'status' => Comment::STATUS_APPROVED
         ]);
 
         return redirect()->route('comments');

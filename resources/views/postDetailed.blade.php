@@ -37,10 +37,15 @@
             @if($comments !== null)
                 <div>
                     @foreach($comments as $comment)
-                        @if($comment->status === 1 && $comment->post_id === $post->id)
-                            <div class="">
-                                <h6>{{ $comment->author }}</h6>
-                                <span></span>
+                        @if($comment->status === \App\Models\Comment::STATUS_APPROVED && $comment->post_id === $post->id)
+                            <div class="mt-3 bg-white py-3 px-4">
+                                <div class="d-flex justify-content-between border-bottom mb-2">
+                                    <h6>{{ $comment->author }}</h6>
+                                    <p class="text-secondary m-0 p-0">{{ $comment->created_at->toFormattedDateString() }}</p>
+                                </div>
+                                <div>
+                                    <p>{{ $comment->content }}</p>
+                                </div>
                             </div>
                         @endif
                     @endforeach
@@ -50,32 +55,34 @@
     </div>
 
     @if(Auth::user() !== null)
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <script>
-        $('#commentForm').on('submit', function (event) {
-            event.preventDefault();
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+                integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+        <script>
+            $('#commentForm').on('submit', function (event) {
+                event.preventDefault();
 
-            let content = $('#comment_content').val();
-            let status = 0;
-            let author = "{{ Auth::user()->username }}";
-            let post_id = "{{ $post->id }}";
+                let content = $('#comment_content').val();
+                let status = 0;
+                let author = "{{ Auth::user()->username }}";
+                let post_id = "{{ $post->id }}";
 
-            $.ajax({
-                url: "/comment/created",
-                type: "POST",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    content: content,
-                    status: status,
-                    author: author,
-                    id: post_id
-                },
-                success: function (response) {
-                    console.log(response);
-                }
+                document.getElementById('comment_content').value = '';
+
+                $.ajax({
+                    url: "/comment/created",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        content: content,
+                        status: status,
+                        author: author,
+                        id: post_id
+                    },
+                    success: function (response) {
+                        alert(response['success']);
+                    }
+                });
             });
-        });
-    </script>
+        </script>
     @endif
 @endsection

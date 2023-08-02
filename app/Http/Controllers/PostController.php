@@ -40,16 +40,20 @@ class PostController extends Controller
             'user' => ['required']
         ]);
 
+        $tag = Tag::array2string(array_unique(Tag::string2array($validatedData['tags'])));
+        (new TagController())->createOrUpdateTag($tag, $validatedData['status']);
+
         Post::create([
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],
             'status' => $validatedData['status'],
-            'tags' => Tag::array2string(array_unique(Tag::string2array($validatedData['tags']))),
+            'tags' => $tag,
             'author_id' => $validatedData['user']
         ]);
 
         return redirect()->route('posts');
     }
+
     public function changePost(Request $request)
     {
         $validatedData = $request->validate([
@@ -60,19 +64,27 @@ class PostController extends Controller
             'user' => ['required']
         ]);
 
+        $tag = Tag::array2string(array_unique(Tag::string2array($validatedData['tags'])));
+        (new TagController())->createOrUpdateTag($tag, $validatedData['status']);
+
         Post::find($request->input('post_id'))->update([
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],
             'status' => $validatedData['status'],
-            'tags' => Tag::array2string(array_unique(Tag::string2array($validatedData['tags']))),
+            'tags' => $tag,
             'author_id' => $validatedData['user']
         ]);
 
         return redirect()->route('posts');
     }
+
     public function deletePost(Request $request)
     {
-        Post::find($request->input('id'))->delete();
+        $post =  Post::find($request->input('id'));
+
+        (new TagController())->deleteTag($post->tags);
+        $post->delete();
+
         return redirect()->route('posts');
     }
 }
